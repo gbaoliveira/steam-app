@@ -4,12 +4,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import NavigationService from './NavigationService';
 
-import GameScreen from './screens/GameScreen'
-import NotificationScreen from './screens/NotificationScreen'
-import ProfileScreen from './screens/ProfileScreen'
-import { BorderlessButton } from 'react-native-gesture-handler';
 
+import LoginScreen from './screens/LoginScreen';
+import GameScreen from './screens/GameScreen';
+import NotificationScreen from './screens/NotificationScreen';
+import ProfileScreen from './screens/ProfileScreen';
+
+const loginName = 'login'
 const gameName = 'game'
 const notificationsName = 'notifications'
 const profileName = 'profile'
@@ -17,19 +20,29 @@ const profileName = 'profile'
 const Tab = createBottomTabNavigator();
 
 function MainContainer() {
-    return (
-      <NavigationContainer>
+  const navigationRef = React.useRef();
+
+  React.useEffect(() => {
+    NavigationService.setTopLevelNavigator(navigationRef);
+  }, []);
+
+  return (
+    <NavigationContainer ref={navigationRef}> 
         <Tab.Navigator 
-          initialRouteName={profileName}
+          initialRouteName={loginName}
           screenOptions={({ route }) => ({
             tabBarStyle:{borderTopWidth:0, height: 70},
             headerShown: false,
+            gestureEnabled: true,
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
               let rn = route.name;
 
   
-              if (rn === profileName) {
+              if (rn === loginName) {
+                iconName = focused ? 'log-in' : 'log-in-outline';
+
+              } else if (rn === profileName) {
                 iconName = focused ? 'person' : 'person-outline';
   
               } else if (rn === notificationsName) {
@@ -50,7 +63,8 @@ function MainContainer() {
             activeBackgroundColor: '#1f2127',
             labelStyle: { paddingBottom: 10, fontSize: 10},
           }}>
-            
+
+          <Tab.Screen name={loginName} component={LoginScreen} />
           <Tab.Screen name={profileName} component={ProfileScreen} />
           <Tab.Screen name={notificationsName} component={NotificationScreen} />
           <Tab.Screen name={gameName} component={GameScreen} />

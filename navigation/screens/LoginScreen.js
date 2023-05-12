@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
+import NavigationService from '../NavigationService';
 
-import Botao from '../../components/Botao';
 
-export default function App() {
+export default function LoginScreen({ navigation }) {
+
   return (
     <View style={styles.container}>
       <Text style={styles.paragraph}>
@@ -22,7 +23,11 @@ export default function App() {
       <TextInput
         style={styles.input}
       />
-       <Botao />
+      <View style={styles.screenContainer}>
+        <TouchableOpacity onPress={() => NavigationService.navigate('profile')} style={{ height: 60, backgroundColor:'#216dae' , alignItems: 'center', borderRadius: 5}}>
+        <Text style={{color: '#93b4d0', marginTop: 15, fontSize: 20}}>Sign in</Text>
+        </TouchableOpacity>
+      </View>
        <Text style={styles.textoforgot}>
         Forgot your account name or password?
       </Text>
@@ -43,6 +48,10 @@ const styles = StyleSheet.create({
     fontSize: 45,
     color: '#c6cacd',
     textAlign: 'center',
+  },
+  screenContainer: {
+    justifyContent: "center",
+    padding: 10
   },
   textologin: {
     color: '#c6cacd',
